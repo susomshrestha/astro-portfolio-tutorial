@@ -1,0 +1,121 @@
+---
+interface NavLink {
+	href: string;
+	label: string;
+}
+
+interface Props {
+	logo?: string;
+	navLinks?: NavLink[];
+}
+
+const {
+	logo = '/portfolio.png',
+	navLinks = [
+		{ href: '#home', label: 'Home' },
+		{ href: '#experience', label: 'Experience' },
+		{ href: '#projects', label: 'Projects' },
+		{ href: '#contact', label: 'Contact' },
+	],
+} = Astro.props;
+---
+
+<nav class="fixed w-full top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
+	<div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+		<div class="flex items-center w-full">
+			<!-- Logo - First in order -->
+			<img src={logo} alt="Logo" class="h-10 w-10 mr-4" />
+
+			<div class="flex-1 flex justify-end items-center">
+				<!-- Mobile Menu Toggle - Second in order for mobile -->
+				<button
+					id="mobile-menu-toggle"
+					class="md:hidden text-gray-700 dark:text-gray-300 focus:outline-none order-2">
+					<svg
+						class="w-6 h-6"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						xmlns="http://www.w3.org/2000/svg">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6h16M4 12h16M4 18h16"></path>
+					</svg>
+				</button>
+
+				<!-- Theme Toggle - First in mobile, third in desktop -->
+				<button
+					id="theme-toggle"
+					class="w-8 h-8 mx-4 grid items-center justify-center rounded-full dark:bg-gray-700 bg-gray-200 transition-colors
+								 order-1 md:order-3">
+					<span class="dark:hidden">🌙</span>
+					<span class="hidden dark:inline">☀️</span>
+				</button>
+
+				<!-- Navigation Links - Shared between mobile and desktop -->
+				<div
+					id="nav-links"
+					class="hidden md:flex space-x-4 order-3 md:order-1 ml-auto
+								 fixed md:static inset-x-0 top-16 md:top-auto
+								 bg-white/90 md:bg-transparent
+								 dark:bg-gray-900/90 md:dark:bg-transparent
+								 shadow-md md:shadow-none
+								 transition-all duration-300 ease-in-out">
+					<div
+						class="flex flex-col md:flex-row items-center justify-center w-full md:w-auto
+											space-y-4 md:space-y-0 md:space-x-4
+											bg-gray-50 dark:bg-gray-800
+											md:bg-transparent md:dark:bg-transparent
+											p-4 md:p-0 rounded-lg md:rounded-none
+											shadow-sm md:shadow-none">
+						{
+							navLinks.map((link) => (
+								<a
+									href={link.href}
+									class="text-gray-700 dark:text-gray-300 
+											 hover:text-blue-600 
+											 hover:bg-gray-200 dark:hover:bg-gray-700 
+											 px-4 py-2 rounded-md w-full md:w-auto text-center
+											 transition-colors duration-200 
+											 border border-transparent hover:border-gray-300 dark:hover:border-gray-600">
+									{link.label}
+								</a>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+
+<script>
+	// Theme Toggle Functionality
+	const htmlElement = document.documentElement;
+	const themeToggle = document.getElementById('theme-toggle');
+	const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+	const navLinks = document.getElementById('nav-links');
+
+	const getTheme = () => localStorage.getItem('theme') || 'light';
+	const setTheme = (theme: any) => {
+		localStorage.setItem('theme', theme);
+		htmlElement.classList.toggle('dark', theme === 'dark');
+	};
+
+	// Initial theme setup
+	setTheme(getTheme());
+
+	// Theme toggle event listener
+	themeToggle?.addEventListener('click', () => {
+		const currentTheme = getTheme();
+		const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+		setTheme(newTheme);
+	});
+
+	// Mobile menu toggle
+	mobileMenuToggle?.addEventListener('click', () => {
+		navLinks?.classList.toggle('hidden');
+	});
+</script>

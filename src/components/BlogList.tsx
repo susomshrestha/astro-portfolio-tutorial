@@ -67,7 +67,7 @@ const BlogList: React.FC = () => {
 								<h2 className="text-2xl font-semibold text-gray-800 mb-4">{blog.title}</h2>
 								<p className="text-gray-600 line-clamp-3">{blog.summary}</p>
 								<a
-									href={`/blog/${blog.id}`}
+									href="#"
 									className="mt-4 inline-block text-blue-500 hover:text-blue-700">
 									Read More →
 								</a>

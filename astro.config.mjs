@@ -9,5 +9,5 @@ import react from '@astrojs/react';
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), react()],
-  base: '/astro-portfolio-tutorial/',
+  site: 'https://susomshrestha.github.io/astro-portfolio-tutorial',
 });
